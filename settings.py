@@ -1,0 +1,11 @@
+WIDTH = 640
+HEIGHT = 480
+
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GREEN = (0, 255, 0)
+YELLOW = (0, 126, 126)
+BLUE = (0, 0, 255)
+BROWN = (150, 75, 0)
+
+FPS = 60
