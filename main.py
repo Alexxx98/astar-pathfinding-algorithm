@@ -145,11 +145,14 @@ def pathfinder(start, end, nodes):
 
 def create_path(start, end, nodes):
     current_node = end
-    while current_node != start:
-        current_node = current_node.parent
-        if current_node != start:
-            current_node.make_path()
-        draw_grid(nodes)
+    try:
+        while current_node != start:
+            current_node = current_node.parent
+            if current_node != start:
+                current_node.make_path()
+            draw_grid(nodes)
+    except AttributeError:
+        return
 
 
 if __name__ == "__main__":
