@@ -59,15 +59,17 @@ def main():
             if event.type == pygame.MOUSEBUTTONUP:
                 holding = False
             if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-                for row in nodes:
-                    for node in row:
-                        node.update_neighbours(nodes)
                 pathfinder(start, end, nodes)
                 create_path(start, end, nodes)
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 for row in nodes:
                     for node in row:
                         node.reset()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                for row in nodes:
+                    for node in row:
+                        if not node.is_wall():
+                            node.reset()
 
         draw_grid(nodes)
 
@@ -78,8 +80,8 @@ def main():
 
 def get_grid():
     nodes = []
-    node_width = 20
-    node_height = 20
+    node_width = 10
+    node_height = 10
     rows = WIDTH // node_width
     cols = HEIGHT // node_height
     for row in range(rows):
@@ -105,6 +107,18 @@ def draw_grid(nodes):
     pygame.display.flip()
 
 
+def draw_node(node):
+    pygame.draw.rect(
+        WINDOW, node.color, pygame.Rect(node.x, node.y, node.width, node.height)
+    )
+
+    pygame.draw.rect(
+        WINDOW, BLACK, pygame.Rect(node.x, node.y, node.width, node.height), 1
+    )
+
+    pygame.display.flip()
+
+
 def h_score(pos1, pos2):
     x1, y1 = pos1
     x2, y2 = pos2
@@ -126,6 +140,8 @@ def pathfinder(start, end, nodes):
 
         open_set.remove(current_node)
 
+        current_node.update_neighbours(nodes)
+
         if current_node == end:
             return
 
@@ -138,9 +154,8 @@ def pathfinder(start, end, nodes):
                 neighbour.parent = current_node
                 if neighbour != end:
                     neighbour.make_open()
+                    draw_node(neighbour)
                 open_set.append(neighbour)
-
-        draw_grid(nodes)
 
 
 def create_path(start, end, nodes):
